@@ -1,12 +1,13 @@
-using EasyScrutor;
+using ScrutorAttributes;
 
 namespace ConsoleHostExample.Services;
 
 /// <summary>
 /// Processes data with scoped lifetime.
-/// Auto-registered as Scoped using EasyScrutor.
+/// Auto-registered as Scoped using ScrutorAttributes.
 /// </summary>
-public class DataProcessor : IDataProcessor, IScopedLifetime {
+[InjectedScoped]
+public class DataProcessor : IDataProcessor {
     /// <summary>
     /// Logger instance for this class.
     /// </summary>

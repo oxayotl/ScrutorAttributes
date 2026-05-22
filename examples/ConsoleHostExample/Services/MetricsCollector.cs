@@ -1,4 +1,4 @@
-using EasyScrutor;
+using ScrutorAttributes;
 using System.Collections.Concurrent;
 
 namespace ConsoleHostExample.Services;
@@ -7,7 +7,8 @@ namespace ConsoleHostExample.Services;
 /// Collects and reports metrics with singleton lifetime.
 /// Auto-registered as Singleton - shared across the entire application.
 /// </summary>
-public class MetricsCollector : IMetricsCollector, ISingletonLifetime {
+[InjectedSingleton]
+public class MetricsCollector : IMetricsCollector {
     /// <summary>
     /// Thread-safe dictionary storing metric values.
     /// </summary>

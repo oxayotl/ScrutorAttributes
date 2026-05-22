@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\EasyScrutor\EasyScrutor.csproj" />
+    <ProjectReference Include="..\..\src\ScrutorAttributes\ScrutorAttributes.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

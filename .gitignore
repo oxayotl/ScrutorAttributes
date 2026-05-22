@@ -642,7 +642,7 @@ MigrationBackup/
 
 [Bb]undles/
 coverage-report/class.js
-coverage-report/EasyScrutor_ServiceCollectionExtensions.html
+coverage-report/ScrutorAttributes_ServiceCollectionExtensions.html
 coverage-report/icon_cog_dark.svg
 coverage-report/icon_cog.svg
 coverage-report/icon_cube_dark.svg

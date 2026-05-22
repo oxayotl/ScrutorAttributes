@@ -1,6 +1,9 @@
-using EasyScrutor;
+using Microsoft.Extensions.DependencyModel;
 using Scrutor;
+using ScrutorAttributes;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,16 +12,25 @@ namespace Microsoft.Extensions.DependencyInjection;
 /// Provides extension methods for IServiceCollection to enable advanced dependency injection scanning.
 /// </summary>
 public static class ServiceCollectionExtensions {
+
+    private static DependencyContext FindDependencyContext(DependencyContext? providedContext = null) {
+        return providedContext
+            ?? DependencyContext.Default
+            ?? throw new Exception("Unable to get the default context. This likely means you are running a single file application. Please provide explicitely the dependency context when calling AddScrutorAttributes");
+    }
+
+
     /// <summary>
     /// Scans and registers services from all assemblies in the dependency context that implement lifetime marker interfaces.
     /// Services are registered based on their implemented lifetime interfaces (ISingletonLifetime, ITransientLifetime, IScopedLifetime).
     /// </summary>
     /// <param name="services">The service collection to add services to.</param>
+    /// <param name="context">Optional parameter to explicitely provide a DependencyContext, for instance for single file applications where DependencyContext.Default is null.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddEasyScrutor(this IServiceCollection services) {
+    public static IServiceCollection AddScrutorAttributes(this IServiceCollection services, DependencyContext? context = null) {
         services.Scan(scan => scan
-        .FromDependencyContext(DependencyModel.DependencyContext.Default)
-        .AddClassesFromInterfaces());
+        .FromDependencyContext(FindDependencyContext(context))
+        .AddClassesFromAnnotations());
 
         return services;
     }
@@ -29,11 +41,12 @@ public static class ServiceCollectionExtensions {
     /// </summary>
     /// <param name="services">The service collection to add services to.</param>
     /// <param name="predicate">A predicate to filter which assemblies to scan.</param>
+    /// <param name="context">Optional parameter to explicitely provide a DependencyContext, for instance for single file applications where DependencyContext.Default is null.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddEasyScrutor(this IServiceCollection services, Func<Assembly, bool> predicate) {
+    public static IServiceCollection AddScrutorAttributes(this IServiceCollection services, Func<Assembly, bool> predicate, DependencyContext? context = null) {
         services.Scan(scan => scan
-        .FromDependencyContext(DependencyModel.DependencyContext.Default, predicate)
-        .AddClassesFromInterfaces());
+        .FromDependencyContext(FindDependencyContext(context), predicate)
+        .AddClassesFromAnnotations());
 
         return services;
     }
@@ -44,12 +57,13 @@ public static class ServiceCollectionExtensions {
     /// </summary>
     /// <param name="services">The service collection to add services to.</param>
     /// <param name="prefix">The prefix that assembly names must start with.</param>
+    /// <param name="context">Optional parameter to explicitely provide a DependencyContext, for instance for single file applications where DependencyContext.Default is null.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddEasyScrutorForAssembliesStartingWith(this IServiceCollection services, string prefix) {
+    public static IServiceCollection AddScrutorAttributesForAssembliesStartingWith(this IServiceCollection services, string prefix, DependencyContext? context = null) {
         services.Scan(scan => scan
-        .FromDependencyContext(DependencyModel.DependencyContext.Default, assembly =>
+        .FromDependencyContext(FindDependencyContext(context), assembly =>
             assembly.FullName != null && assembly.FullName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
-        .AddClassesFromInterfaces());
+        .AddClassesFromAnnotations());
 
         return services;
     }
@@ -60,12 +74,13 @@ public static class ServiceCollectionExtensions {
     /// </summary>
     /// <param name="services">The service collection to add services to.</param>
     /// <param name="text">The text that assembly names must contain.</param>
+    /// <param name="context">Optional parameter to explicitely provide a DependencyContext, for instance for single file applications where DependencyContext.Default is null.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddEasyScrutorForAssembliesContaining(this IServiceCollection services, string text) {
+    public static IServiceCollection AddScrutorAttributesForAssembliesContaining(this IServiceCollection services, string text, DependencyContext? context = null) {
         services.Scan(scan => scan
-        .FromDependencyContext(DependencyModel.DependencyContext.Default, assembly =>
+        .FromDependencyContext(FindDependencyContext(context), assembly =>
             assembly.FullName != null && assembly.FullName.Contains(text, StringComparison.OrdinalIgnoreCase))
-        .AddClassesFromInterfaces());
+        .AddClassesFromAnnotations());
 
         return services;
     }
@@ -75,12 +90,13 @@ public static class ServiceCollectionExtensions {
     /// Services are registered based on their implemented lifetime interfaces (ISingletonLifetime, ITransientLifetime, IScopedLifetime).
     /// </summary>
     /// <param name="services">The service collection to add services to.</param>
+    /// <param name="context">Optional parameter to explicitely provide a DependencyContext, for instance for single file applications where DependencyContext.Default is null.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddEasyScrutorForThisAssembly(this IServiceCollection services) {
+    public static IServiceCollection AddScrutorAttributesForThisAssembly(this IServiceCollection services, DependencyContext? context = null) {
         var callingAssembly = Assembly.GetCallingAssembly();
         services.Scan(scan => scan
         .FromAssemblies(callingAssembly)
-        .AddClassesFromInterfaces());
+        .AddClassesFromAnnotations());
 
         return services;
     }
@@ -91,41 +107,35 @@ public static class ServiceCollectionExtensions {
     /// </summary>
     /// <param name="selector">The implementation type selector to configure.</param>
     /// <returns>The configured implementation type selector.</returns>
-    private static IImplementationTypeSelector AddClassesFromInterfaces(this IImplementationTypeSelector selector) {
-        //singleton
-        selector
-        .AddClasses(classes => classes.AssignableTo<ISingletonLifetime>(), true)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsMatchingInterface()
-            .WithSingletonLifetime()
-
-        .AddClasses(classes => classes.AssignableTo<ISelfSingletonLifetime>(), true)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsSelf()
-            .WithSingletonLifetime()
-
-        //transient
-        .AddClasses(classes => classes.AssignableTo<ITransientLifetime>(), true)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsMatchingInterface()
-            .WithTransientLifetime()
-
-        .AddClasses(classes => classes.AssignableTo<ISelfTransientLifetime>(), true)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsSelf()
-            .WithTransientLifetime()
-
-        //scoped
-        .AddClasses(classes => classes.AssignableTo<IScopedLifetime>(), true)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsMatchingInterface()
-            .WithScopedLifetime()
-
-        .AddClasses(classes => classes.AssignableTo<ISelfScopedLifetime>(), true)
-            .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-            .AsSelf()
-            .WithScopedLifetime();
-
+    private static IImplementationTypeSelector AddClassesFromAnnotations(this IImplementationTypeSelector selector) {
+    selector.AddClasses(classes => classes.
+        WithAttribute<Injected>()
+    )
+    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+    .As(t => {
+        if (t.IsGenericType) {
+            return [];
+        }
+        var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
+        if (injectedAttribute.AsSelf) {
+            return [t];
+        }
+        List<Type> result = [.. injectedAttribute.InjectedAs];
+        if (injectedAttribute.As != null) {
+            result.Add(injectedAttribute.As);
+        }
+        if (result.Count == 0) {
+            var implementedInterfaces = t.GetInterfaces();
+            result.Add(implementedInterfaces.Length == 1 ? implementedInterfaces[0] : t);
+        }
+        return result;
+    }
+    )
+    .WithLifetime(t => {
+        var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
+        return injectedAttribute.Lifetime;
+    }
+    );
         return selector;
     }
 }

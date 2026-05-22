@@ -1,12 +1,13 @@
-using EasyScrutor;
+using ScrutorAttributes;
 
 namespace BlazorServerExample.Services;
 
 /// <summary>
 /// Implements counter functionality with singleton lifetime.
-/// Auto-registered as Singleton using EasyScrutor.
+/// Auto-registered as Singleton using ScrutorAttributes.
 /// </summary>
-public class CounterService : ICounterService, ISingletonLifetime {
+[InjectedSingleton]
+public class CounterService : ICounterService {
     /// <summary>
     /// The internal counter value.
     /// </summary>

@@ -1,22 +1,22 @@
-using EasyScrutor.Tests.TestServices;
+using ScrutorAttributes.Tests.TestServices;
 using System.Reflection;
 
-namespace EasyScrutor.Tests;
+namespace ScrutorAttributes.Tests;
 
 /// <summary>
-/// Tests for assembly filtering methods like AddEasyScrutorForAssembliesStartingWith and AddEasyScrutorForAssembliesContaining.
+/// Tests for assembly filtering methods like AddScrutorAttributesForAssembliesStartingWith and AddScrutorAttributesForAssembliesContaining.
 /// </summary>
 [TestFixture]
 public class AssemblyFilterTests {
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_MatchingPrefix_ShouldRegisterServices() {
+    public void AddScrutorAttributesForAssembliesStartingWith_MatchingPrefix_ShouldRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         var prefix = testAssemblyName!.Substring(0, 10); // Get first 10 characters as prefix
 
         // Act
-        services.AddEasyScrutorForAssembliesStartingWith(prefix);
+        services.AddScrutorAttributesForAssembliesStartingWith(prefix);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -26,12 +26,12 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_NonMatchingPrefix_ShouldNotRegisterServices() {
+    public void AddScrutorAttributesForAssembliesStartingWith_NonMatchingPrefix_ShouldNotRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForAssembliesStartingWith("NonExistentPrefix");
+        services.AddScrutorAttributesForAssembliesStartingWith("NonExistentPrefix");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -41,14 +41,14 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_CaseInsensitive_ShouldRegisterServices() {
+    public void AddScrutorAttributesForAssembliesStartingWith_CaseInsensitive_ShouldRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         var prefix = testAssemblyName!.Substring(0, 10).ToLower(); // Lowercase prefix
 
         // Act
-        services.AddEasyScrutorForAssembliesStartingWith(prefix);
+        services.AddScrutorAttributesForAssembliesStartingWith(prefix);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -56,25 +56,25 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_ShouldReturnServiceCollection_ForChaining() {
+    public void AddScrutorAttributesForAssembliesStartingWith_ShouldReturnServiceCollection_ForChaining() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        var result = services.AddEasyScrutorForAssembliesStartingWith("Test");
+        var result = services.AddScrutorAttributesForAssembliesStartingWith("Test");
 
         // Assert
         Assert.That(result, Is.SameAs(services), "Should return the same ServiceCollection for method chaining");
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_MatchingText_ShouldRegisterServices() {
+    public void AddScrutorAttributesForAssembliesContaining_MatchingText_ShouldRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
         var containingText = "Scrutor"; // Should be part of the assembly name
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining(containingText);
+        services.AddScrutorAttributesForAssembliesContaining(containingText);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -84,12 +84,12 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_NonMatchingText_ShouldNotRegisterServices() {
+    public void AddScrutorAttributesForAssembliesContaining_NonMatchingText_ShouldNotRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining("NonExistentText");
+        services.AddScrutorAttributesForAssembliesContaining("NonExistentText");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -99,13 +99,13 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_CaseInsensitive_ShouldRegisterServices() {
+    public void AddScrutorAttributesForAssembliesContaining_CaseInsensitive_ShouldRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
         var containingText = "SCRUTOR"; // Uppercase
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining(containingText);
+        services.AddScrutorAttributesForAssembliesContaining(containingText);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -113,19 +113,19 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_ShouldReturnServiceCollection_ForChaining() {
+    public void AddScrutorAttributesForAssembliesContaining_ShouldReturnServiceCollection_ForChaining() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        var result = services.AddEasyScrutorForAssembliesContaining("Test");
+        var result = services.AddScrutorAttributesForAssembliesContaining("Test");
 
         // Assert
         Assert.That(result, Is.SameAs(services), "Should return the same ServiceCollection for method chaining");
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_PartialMatch_ShouldRegisterServices() {
+    public void AddScrutorAttributesForAssembliesContaining_PartialMatch_ShouldRegisterServices() {
         // Arrange
         var services = new ServiceCollection();
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
@@ -133,7 +133,7 @@ public class AssemblyFilterTests {
         var partialText = testAssemblyName!.Substring(5, 5);
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining(partialText);
+        services.AddScrutorAttributesForAssembliesContaining(partialText);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -141,15 +141,15 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_CalledMultipleTimes_ShouldSkipDuplicates() {
+    public void AddScrutorAttributesForAssembliesStartingWith_CalledMultipleTimes_ShouldSkipDuplicates() {
         // Arrange
         var services = new ServiceCollection();
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         var prefix = testAssemblyName!.Substring(0, 10);
 
         // Act
-        services.AddEasyScrutorForAssembliesStartingWith(prefix);
-        services.AddEasyScrutorForAssembliesStartingWith(prefix);
+        services.AddScrutorAttributesForAssembliesStartingWith(prefix);
+        services.AddScrutorAttributesForAssembliesStartingWith(prefix);
 
         // Assert - Should only have one registration due to Skip strategy
         var singletonServices = services.Where(s => s.ServiceType == typeof(ISingletonService)).ToList();
@@ -157,13 +157,13 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_CalledMultipleTimes_ShouldSkipDuplicates() {
+    public void AddScrutorAttributesForAssembliesContaining_CalledMultipleTimes_ShouldSkipDuplicates() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining("Scrutor");
-        services.AddEasyScrutorForAssembliesContaining("Scrutor");
+        services.AddScrutorAttributesForAssembliesContaining("Scrutor");
+        services.AddScrutorAttributesForAssembliesContaining("Scrutor");
 
         // Assert - Should only have one registration due to Skip strategy
         var singletonServices = services.Where(s => s.ServiceType == typeof(ISingletonService)).ToList();
@@ -171,14 +171,14 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_AllLifetimeInterfaces_ShouldBeRegistered() {
+    public void AddScrutorAttributesForAssembliesStartingWith_AllLifetimeInterfaces_ShouldBeRegistered() {
         // Arrange
         var services = new ServiceCollection();
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
         var prefix = testAssemblyName!.Substring(0, 10);
 
         // Act
-        services.AddEasyScrutorForAssembliesStartingWith(prefix);
+        services.AddScrutorAttributesForAssembliesStartingWith(prefix);
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Verify all 6 lifetime interfaces are working
@@ -193,12 +193,12 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_AllLifetimeInterfaces_ShouldBeRegistered() {
+    public void AddScrutorAttributesForAssembliesContaining_AllLifetimeInterfaces_ShouldBeRegistered() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining("Scrutor");
+        services.AddScrutorAttributesForAssembliesContaining("Scrutor");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Verify all 6 lifetime interfaces are working
@@ -213,12 +213,12 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesStartingWith_EmptyPrefix_ShouldMatchAllAssemblies() {
+    public void AddScrutorAttributesForAssembliesStartingWith_EmptyPrefix_ShouldMatchAllAssemblies() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForAssembliesStartingWith("");
+        services.AddScrutorAttributesForAssembliesStartingWith("");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Empty prefix matches everything
@@ -226,12 +226,12 @@ public class AssemblyFilterTests {
     }
 
     [Test]
-    public void AddEasyScrutorForAssembliesContaining_EmptyText_ShouldMatchAllAssemblies() {
+    public void AddScrutorAttributesForAssembliesContaining_EmptyText_ShouldMatchAllAssemblies() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForAssembliesContaining("");
+        services.AddScrutorAttributesForAssembliesContaining("");
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Empty text matches everything

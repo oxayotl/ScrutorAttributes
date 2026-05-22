@@ -1,10 +1,11 @@
-namespace EasyScrutor.Tests.TestServices;
+namespace ScrutorAttributes.Tests.TestServices;
 
 // Singleton Services
-public interface ISingletonService : ISingletonLifetime {
+public interface ISingletonService {
     string GetMessage();
 }
 
+[InjectedSingleton(As =typeof(ISingletonService))]
 public class SingletonService : ISingletonService {
     private readonly Guid _id = Guid.NewGuid();
 
@@ -12,17 +13,18 @@ public class SingletonService : ISingletonService {
 }
 
 // Self Singleton Services
-public class SelfSingletonService : ISelfSingletonLifetime {
+[InjectedSingleton]
+public class SelfSingletonService {
     private readonly Guid _id = Guid.NewGuid();
 
     public string GetMessage() => $"SelfSingleton: {_id}";
 }
 
 // Transient Services
-public interface ITransientService : ITransientLifetime {
+public interface ITransientService {
     string GetMessage();
 }
-
+[InjectedTransient(As =typeof(ITransientService))]
 public class TransientService : ITransientService {
     private readonly Guid _id = Guid.NewGuid();
 
@@ -30,17 +32,19 @@ public class TransientService : ITransientService {
 }
 
 // Self Transient Services
-public class SelfTransientService : ISelfTransientLifetime {
+[InjectedTransient]
+public class SelfTransientService {
     private readonly Guid _id = Guid.NewGuid();
 
     public string GetMessage() => $"SelfTransient: {_id}";
 }
 
 // Scoped Services
-public interface IScopedService : IScopedLifetime {
+public interface IScopedService{
     string GetMessage();
 }
 
+[InjectedScoped(As = typeof(IScopedService))]
 public class ScopedService : IScopedService {
     private readonly Guid _id = Guid.NewGuid();
 
@@ -48,14 +52,15 @@ public class ScopedService : IScopedService {
 }
 
 // Self Scoped Services
-public class SelfScopedService : ISelfScopedLifetime {
+[InjectedScoped]
+public class SelfScopedService {
     private readonly Guid _id = Guid.NewGuid();
 
     public string GetMessage() => $"SelfScoped: {_id}";
 }
 
 // Multiple Implementations
-public interface IMultipleImplementationService : ITransientLifetime {
+public interface IMultipleImplementationService {
     string GetName();
 }
 
@@ -68,10 +73,11 @@ public class SecondImplementation : IMultipleImplementationService {
 }
 
 // Service with Dependencies
-public interface IComplexService : IScopedLifetime {
+public interface IComplexService {
     string ProcessData();
 }
 
+[InjectedScoped(As = typeof(IComplexService))]
 public class ComplexService : IComplexService {
     private readonly ISingletonService _singletonService;
     private readonly ITransientService _transientService;
@@ -85,7 +91,8 @@ public class ComplexService : IComplexService {
 }
 
 // Abstract class test
-public abstract class BaseService : ISingletonLifetime {
+[InjectedSingleton]
+public abstract class BaseService {
     public abstract string GetData();
 }
 
@@ -94,10 +101,14 @@ public class ConcreteService : BaseService {
 }
 
 // Generic service test
-public interface IGenericService<T> : ITransientLifetime {
+public interface IGenericService<T> {
     T GetDefault();
 }
 
+[InjectedTransient]
 public class GenericService<T> : IGenericService<T> {
     public T GetDefault() => default!;
+}
+
+public class Prout : GenericService<int> {
 }

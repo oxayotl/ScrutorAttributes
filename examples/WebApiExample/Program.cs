@@ -6,8 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// Add EasyScrutor - Automatically scans and registers services based on lifetime interfaces
-builder.Services.AddEasyScrutor();
+// Add ScrutorAttributes - Automatically scans and registers services based on lifetime interfaces
+builder.Services.AddScrutorAttributes();
 
 var app = builder.Build();
 

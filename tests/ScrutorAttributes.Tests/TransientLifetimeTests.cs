@@ -1,6 +1,6 @@
-using EasyScrutor.Tests.TestServices;
+using ScrutorAttributes.Tests.TestServices;
 
-namespace EasyScrutor.Tests;
+namespace ScrutorAttributes.Tests;
 
 [TestFixture]
 public class TransientLifetimeTests {
@@ -9,7 +9,7 @@ public class TransientLifetimeTests {
     [SetUp]
     public void Setup() {
         var services = new ServiceCollection();
-        services.AddEasyScrutor();
+        services.AddScrutorAttributes();
         _serviceProvider = services.BuildServiceProvider();
     }
 

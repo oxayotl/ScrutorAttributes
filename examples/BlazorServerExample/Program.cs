@@ -7,8 +7,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-// Add EasyScrutor - Automatically scans and registers services
-builder.Services.AddEasyScrutor();
+// Add ScrutorAttributes - Automatically scans and registers services
+builder.Services.AddScrutorAttributes();
 
 var app = builder.Build();
 

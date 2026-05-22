@@ -1,4 +1,4 @@
-using EasyScrutor;
+using ScrutorAttributes;
 
 namespace WebApiExample.Services;
 
@@ -6,7 +6,8 @@ namespace WebApiExample.Services;
 /// Provides date and time services with singleton lifetime.
 /// This service will be automatically registered as Singleton because it implements ISingletonLifetime.
 /// </summary>
-public class DateTimeService : IDateTimeService, ISingletonLifetime {
+[InjectedSingleton]
+public class DateTimeService : IDateTimeService {
     /// <summary>
     /// Gets the current date and time in UTC.
     /// </summary>

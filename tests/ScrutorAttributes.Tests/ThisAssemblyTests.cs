@@ -1,20 +1,20 @@
-using EasyScrutor.Tests.TestServices;
+using ScrutorAttributes.Tests.TestServices;
 using System.Reflection;
 
-namespace EasyScrutor.Tests;
+namespace ScrutorAttributes.Tests;
 
 /// <summary>
-/// Tests for AddEasyScrutorForThisAssembly method that scans only the calling assembly.
+/// Tests for AddScrutorAttributesForThisAssembly method that scans only the calling assembly.
 /// </summary>
 [TestFixture]
 public class ThisAssemblyTests {
     [Test]
-    public void AddEasyScrutorForThisAssembly_ShouldRegisterServicesFromCallingAssembly() {
+    public void AddScrutorAttributesForThisAssembly_ShouldRegisterServicesFromCallingAssembly() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Services from test assembly should be registered
@@ -24,12 +24,12 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_ShouldRegisterAllLifetimeInterfaces() {
+    public void AddScrutorAttributesForThisAssembly_ShouldRegisterAllLifetimeInterfaces() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Verify all 6 lifetime interfaces are working
@@ -44,25 +44,25 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_ShouldReturnServiceCollection_ForChaining() {
+    public void AddScrutorAttributesForThisAssembly_ShouldReturnServiceCollection_ForChaining() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        var result = services.AddEasyScrutorForThisAssembly();
+        var result = services.AddScrutorAttributesForThisAssembly();
 
         // Assert
         Assert.That(result, Is.SameAs(services), "Should return the same ServiceCollection for method chaining");
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_CalledMultipleTimes_ShouldSkipDuplicates() {
+    public void AddScrutorAttributesForThisAssembly_CalledMultipleTimes_ShouldSkipDuplicates() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForThisAssembly();
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
 
         // Assert - Should only have one registration due to Skip strategy
         var singletonServices = services.Where(s => s.ServiceType == typeof(ISingletonService)).ToList();
@@ -70,10 +70,10 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_VerifyLifetimes_SingletonShouldBeSameInstance() {
+    public void AddScrutorAttributesForThisAssembly_VerifyLifetimes_SingletonShouldBeSameInstance() {
         // Arrange
         var services = new ServiceCollection();
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Act
@@ -87,10 +87,10 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_VerifyLifetimes_TransientShouldBeDifferentInstances() {
+    public void AddScrutorAttributesForThisAssembly_VerifyLifetimes_TransientShouldBeDifferentInstances() {
         // Arrange
         var services = new ServiceCollection();
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Act
@@ -104,10 +104,10 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_VerifyLifetimes_ScopedShouldBeSameWithinScope() {
+    public void AddScrutorAttributesForThisAssembly_VerifyLifetimes_ScopedShouldBeSameWithinScope() {
         // Arrange
         var services = new ServiceCollection();
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Act & Assert
@@ -131,12 +131,12 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_SelfRegistration_ShouldWorkForAllLifetimes() {
+    public void AddScrutorAttributesForThisAssembly_SelfRegistration_ShouldWorkForAllLifetimes() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert - Self-registration should work (no interface, registered as concrete type)
@@ -146,12 +146,12 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_ComplexServiceWithDependencies_ShouldResolve() {
+    public void AddScrutorAttributesForThisAssembly_ComplexServiceWithDependencies_ShouldResolve() {
         // Arrange
         var services = new ServiceCollection();
 
         // Act
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
         // Assert
@@ -163,26 +163,26 @@ public class ThisAssemblyTests {
     }
 
     [Test]
-    public void AddEasyScrutorForThisAssembly_OnlyScansCallingAssembly() {
+    public void AddScrutorAttributesForThisAssembly_OnlyScansCallingAssembly() {
         // Arrange
         var services = new ServiceCollection();
         var testAssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
         // Act
-        services.AddEasyScrutorForThisAssembly();
+        services.AddScrutorAttributesForThisAssembly();
 
         // Assert - Verify only services from this assembly are registered
         // Services from test assembly should be there
         var serviceProvider = services.BuildServiceProvider();
         Assert.That(serviceProvider.GetService<ISingletonService>(), Is.Not.Null, $"Services from {testAssemblyName} should be registered");
 
-        // Verify that it doesn't register services from all assemblies (less than AddEasyScrutor would)
+        // Verify that it doesn't register services from all assemblies (less than AddScrutorAttributes would)
         var serviceCount = services.Count;
         var servicesWithFullScan = new ServiceCollection();
-        servicesWithFullScan.AddEasyScrutor();
+        servicesWithFullScan.AddScrutorAttributes();
         var fullScanCount = servicesWithFullScan.Count;
 
         Assert.That(serviceCount, Is.LessThanOrEqualTo(fullScanCount),
-            "AddEasyScrutorForThisAssembly should register fewer or equal services than AddEasyScrutor");
+            "AddScrutorAttributesForThisAssembly should register fewer or equal services than AddScrutorAttributes");
     }
 }

@@ -3,8 +3,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Add EasyScrutor - Automatically scans and registers services
-builder.Services.AddEasyScrutor();
+// Add ScrutorAttributes - Automatically scans and registers services
+builder.Services.AddScrutorAttributes();
 
 var app = builder.Build();
 

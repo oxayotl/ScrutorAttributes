@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29806.167
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11709.299 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyScrutor", "src\EasyScrutor\EasyScrutor.csproj", "{74722B5F-5FF2-4A5B-A67D-508E97AF67D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScrutorAttributes", "src\ScrutorAttributes\ScrutorAttributes.csproj", "{74722B5F-5FF2-4A5B-A67D-508E97AF67D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E30E4B2A-7C8B-430A-94A7-4ABBE1EF89B9}"
 	ProjectSection(SolutionItems) = preProject
@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiExample", "examples\W
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05-4346-4AA6-1389-037BE0695223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyScrutor.Tests", "tests\EasyScrutor.Tests\EasyScrutor.Tests.csproj", "{AC114962-1CBA-41D0-BB26-9D8E276ABDC7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrutorAttributes.Tests", "tests\ScrutorAttributes.Tests\ScrutorAttributes.Tests.csproj", "{AC114962-1CBA-41D0-BB26-9D8E276ABDC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

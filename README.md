@@ -1,6 +1,6 @@
-## EasyScrutor
+## ScrutorAttributes
 
-ASP.NET Core [Scrutor](https://github.com/khellang/Scrutor) extension for automatic registration of classes inherited from IScopedLifetime, ISelfScopedLifetime, ITransientLifetime, ISelfTransientLifetime, ISingletonLifetime, ISelfSingletonLifetime
+ASP.NET Core [Scrutor](https://github.com/khellang/Scrutor) extension for automatic registration of classes marked with Attribute InjectedScoped, InjectedSingleton and InjectedTransient
 
 ### About This Project
 
@@ -28,12 +28,12 @@ The original project was created by [sefacan](https://github.com/sefacan) and pr
 ### Build Status
 | Build server    | Platform       | Status      |
 |-----------------|----------------|-------------|
-| Github Actions  | All            | ![Build Status](https://github.com/alexdresko/EasyScrutor/workflows/.NET%20Core%20CI/badge.svg) |
-| Code Coverage   | All            | [![codecov](https://codecov.io/gh/alexdresko/EasyScrutor/branch/master/graph/badge.svg)](https://codecov.io/gh/alexdresko/EasyScrutor) |
-| NuGet           | Package        | [![NuGet](https://img.shields.io/nuget/v/EasyScrutor.svg)](https://www.nuget.org/packages/EasyScrutor/) |
-| NuGet           | Downloads      | [![NuGet Downloads](https://img.shields.io/nuget/dt/EasyScrutor.svg)](https://www.nuget.org/packages/EasyScrutor/) |
-| GitHub          | Release        | [![GitHub Release](https://img.shields.io/github/release/alexdresko/EasyScrutor.svg)](https://github.com/alexdresko/EasyScrutor/releases) |
-| License         | MIT            | [![License](https://img.shields.io/github/license/alexdresko/EasyScrutor.svg)](LICENSE) |
+| Github Actions  | All            | ![Build Status](https://github.com/oxayotl/ScrutorAttributes/workflows/.NET%20Core%20CI/badge.svg) |
+| Code Coverage   | All            | [![codecov](https://codecov.io/gh/oxayotl/ScrutorAttributes/branch/master/graph/badge.svg)](https://codecov.io/gh/oxayotl/ScrutorAttributes) |
+| NuGet           | Package        | [![NuGet](https://img.shields.io/nuget/v/ScrutorAttributes.svg)](https://www.nuget.org/packages/ScrutorAttributes/) |
+| NuGet           | Downloads      | [![NuGet Downloads](https://img.shields.io/nuget/dt/ScrutorAttributes.svg)](https://www.nuget.org/packages/ScrutorAttributes/) |
+| GitHub          | Release        | [![GitHub Release](https://img.shields.io/github/release/oxayotl/ScrutorAttributes.svg)](https://github.com/oxayotl/ScrutorAttributes/releases) |
+| License         | MIT            | [![License](https://img.shields.io/github/license/oxayotl/ScrutorAttributes.svg)](LICENSE) |
 
 ## Quick Start
 

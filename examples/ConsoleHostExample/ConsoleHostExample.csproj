@@ -12,6 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\EasyScrutor\EasyScrutor.csproj" />
+    <ProjectReference Include="..\..\src\ScrutorAttributes\ScrutorAttributes.csproj" />
   </ItemGroup>
 </Project>

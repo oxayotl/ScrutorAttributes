@@ -3,7 +3,7 @@ using ConsoleHostExample.Services;
 namespace ConsoleHostExample;
 
 /// <summary>
-/// Background worker that demonstrates service usage with EasyScrutor.
+/// Background worker that demonstrates service usage with ScrutorAttributes.
 /// </summary>
 public class Worker : BackgroundService {
     /// <summary>
@@ -42,7 +42,7 @@ public class Worker : BackgroundService {
     /// <param name="stoppingToken">Cancellation token to stop the worker.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-        _logger.LogInformation("Worker started. Services auto-registered via EasyScrutor!");
+        _logger.LogInformation("Worker started. Services auto-registered via ScrutorAttributes!");
 
         var iteration = 0;
         while (!stoppingToken.IsCancellationRequested && iteration < 5) {
