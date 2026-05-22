@@ -5,7 +5,7 @@ public interface ISingletonService {
     string GetMessage();
 }
 
-[InjectedSingleton(As =typeof(ISingletonService))]
+[InjectedSingleton]
 public class SingletonService : ISingletonService {
     private readonly Guid _id = Guid.NewGuid();
 
@@ -110,5 +110,24 @@ public class GenericService<T> : IGenericService<T> {
     public T GetDefault() => default!;
 }
 
-public class Prout : GenericService<int> {
+public class IntGenericService : GenericService<int> {}
+
+[InjectedSingleton(If = "some_environement_variable")]
+public class IfService {}
+
+public static class TestEnvironementVariable {
+    public const string Name = "some_environement_variable";
+    public const string SameValue = "same_value";
+    public const string DifferentValue = "different_value";
+    public const string SameValueWithDifferentCase = "sAmE_VaLuE";
 }
+
+[InjectedSingleton(IfNot = TestEnvironementVariable.Name)]
+public class IfNotService {}
+
+
+[InjectedSingleton(If = TestEnvironementVariable.Name, Equal = TestEnvironementVariable.SameValue)]
+public class IfEqualService {}
+
+[InjectedSingleton(If = TestEnvironementVariable.Name, NotEqual = TestEnvironementVariable.SameValue)]
+public class IfNotEqualService { }

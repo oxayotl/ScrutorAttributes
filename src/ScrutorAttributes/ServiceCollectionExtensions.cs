@@ -108,34 +108,50 @@ public static class ServiceCollectionExtensions {
     /// <param name="selector">The implementation type selector to configure.</param>
     /// <returns>The configured implementation type selector.</returns>
     private static IImplementationTypeSelector AddClassesFromAnnotations(this IImplementationTypeSelector selector) {
-    selector.AddClasses(classes => classes.
-        WithAttribute<Injected>()
-    )
-    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-    .As(t => {
-        if (t.IsGenericType) {
-            return [];
+        selector.AddClasses(classes => classes.
+            WithAttribute<Injected>()
+        )
+        .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+        .As(t => {
+            if (t.IsGenericType) {
+                return [];
+            }
+            var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
+
+            if (injectedAttribute.If != null) {
+                if (Environment.GetEnvironmentVariable(injectedAttribute.If) == null && injectedAttribute.NotEqual == null) {
+                    return [];
+                }
+                if (injectedAttribute.Equal != null && !string.Equals(Environment.GetEnvironmentVariable(injectedAttribute.If), injectedAttribute.Equal, StringComparison.InvariantCultureIgnoreCase)) {
+                    return [];
+                }
+                if (injectedAttribute.NotEqual != null && string.Equals(Environment.GetEnvironmentVariable(injectedAttribute.If), injectedAttribute.NotEqual, StringComparison.InvariantCultureIgnoreCase)) {
+                    return [];
+                }
+            }
+            if (injectedAttribute.IfNot != null && Environment.GetEnvironmentVariable(injectedAttribute.IfNot) != null) {
+                return [];
+            }
+
+            if (injectedAttribute.AsSelf) {
+                return [t];
+            }
+            List<Type> result = [.. injectedAttribute.InjectedAs];
+            if (injectedAttribute.As != null) {
+                result.Add(injectedAttribute.As);
+            }
+            if (result.Count == 0) {
+                var implementedInterfaces = t.GetInterfaces();
+                result.Add(implementedInterfaces.Length == 1 ? implementedInterfaces[0] : t);
+            }
+            return result;
         }
-        var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
-        if (injectedAttribute.AsSelf) {
-            return [t];
+        )
+        .WithLifetime(t => {
+            var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
+            return injectedAttribute.Lifetime;
         }
-        List<Type> result = [.. injectedAttribute.InjectedAs];
-        if (injectedAttribute.As != null) {
-            result.Add(injectedAttribute.As);
-        }
-        if (result.Count == 0) {
-            var implementedInterfaces = t.GetInterfaces();
-            result.Add(implementedInterfaces.Length == 1 ? implementedInterfaces[0] : t);
-        }
-        return result;
-    }
-    )
-    .WithLifetime(t => {
-        var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
-        return injectedAttribute.Lifetime;
-    }
-    );
+        );
         return selector;
     }
 }

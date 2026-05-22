@@ -1,7 +1,4 @@
-using ScrutorAttributes;
-using System.Reflection;
-
-namespace ScrutorAttribute.Tests;
+namespace ScrutorAttributes.Tests;
 
 [TestFixture]
 public class LifetimeInterfaceTests {
