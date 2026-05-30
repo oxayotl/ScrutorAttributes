@@ -43,9 +43,101 @@ public class MyController
 - `InjectedTransient` - Transient registration
 - `InjectedSingleton` - Singleton registration
 
+## Registration strategies
+
+### Set which assemblies you want to scan for registration
+
+** Scan every assemblies with **
+
+```csharp
+builder.Services.AddEasyScrutor();
+```
+
+**Scan assemblies with a specific prefix**
+
+```csharp
+builder.Services.AddScrutorAttributesForAssembliesStartingWith("some.prefix");
+```
+
+**Scan assemblies with a specific prefix**
+
+```csharp
+builder.Services.AddScrutorAttributesForAssembliesStartingWith("some.prefix");
+```
+
+**Scan assemblies containing a specific string**
+
+```csharp
+builder.Services.AddScrutorAttributesForAssembliesContaining("some.string");
+```
+
+**Scan only from the assembly calling ScrutorAttributes with**
+
+```csharp
+builder.Services.AddScrutorAttributesForThisAssembly();
+```
+
+**Or use any custom function to select which assemblies to scan from with**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(predicate);
+```
+
+### Select a strategy to determine which type each Attribute class should be registered as
+
+**Register each class as itself with**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(RegisterAs.Self);
+```
+
+
+**Register each class as every interfaces it implements with**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(RegisterAs.Interfaces);
+```
+
+
+**Register each class as the interface it implements if there is exactly one such interface, or as itself otherwise, with**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(RegisterAs.OneInterfaceOrSelf);
+```
+
+
+**Register each class as every interface it implements and that is part of the same assembly**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(RegisterAs.InterfacesFromSameAssembly);
+```
+
+
+**Register each class as every interface it implements and that is part of the same assembly, and also as itself**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(RegisterAs.SelfAndInterfacesFromSameAssembly);
+```
+
+
+**Or just register each class as itself and every interface it implements, which is the default behaviour**
+
+```csharp
+Func<Assembly, bool> predicate = ...
+builder.Services.AddScrutorAttributes(RegisterAs.Everything);
+```
+
+
+
 ## Documentation
 
-For complete documentation, examples, and advanced usage, visit the [GitHub repository](https://github.com/oxayotl/ScrutorAttributes).
+For examples, and advanced usage, visit the [GitHub repository](https://github.com/oxayotl/ScrutorAttributes).
 
 ## License
 
