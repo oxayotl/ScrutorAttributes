@@ -42,18 +42,20 @@ public class ServiceLifecycleIntegrationTests {
             transientMsg3 = transient.GetMessage();
         }
 
-        // Assert
-        // Singleton should be same across scopes
-        Assert.That(singletonMsg1, Is.EqualTo(singletonMsg2), "Singleton should be same across scopes");
+        Assert.Multiple(() => {
+            // Assert
+            // Singleton should be same across scopes
+            Assert.That(singletonMsg1, Is.EqualTo(singletonMsg2), "Singleton should be same across scopes");
 
-        // Scoped should be same within scope but different across scopes
-        Assert.That(scopedMsg2, Is.EqualTo(scopedMsg3), "Scoped should be same within scope");
-        Assert.That(scopedMsg1, Is.Not.EqualTo(scopedMsg2), "Scoped should be different across scopes");
+            // Scoped should be same within scope but different across scopes
+            Assert.That(scopedMsg2, Is.EqualTo(scopedMsg3), "Scoped should be same within scope");
+            Assert.That(scopedMsg1, Is.Not.EqualTo(scopedMsg2), "Scoped should be different across scopes");
 
-        // Transient should always be different
-        Assert.That(transientMsg1, Is.Not.EqualTo(transientMsg2), "Transient should be different within same scope");
-        Assert.That(transientMsg1, Is.Not.EqualTo(transientMsg3), "Transient should be different across scopes");
-        Assert.That(transientMsg2, Is.Not.EqualTo(transientMsg3), "Transient should be different across scopes");
+            // Transient should always be different
+            Assert.That(transientMsg1, Is.Not.EqualTo(transientMsg2), "Transient should be different within same scope");
+            Assert.That(transientMsg1, Is.Not.EqualTo(transientMsg3), "Transient should be different across scopes");
+            Assert.That(transientMsg2, Is.Not.EqualTo(transientMsg3), "Transient should be different across scopes");
+        });
     }
 
     [Test]
@@ -139,10 +141,12 @@ public class ServiceLifecycleIntegrationTests {
         var transientConcrete = serviceProvider.GetService<TransientService>();
         var scopedConcrete = serviceProvider.GetService<ScopedService>();
 
-        // Assert - These should be null because they're registered via AsMatchingInterface
-        Assert.That(singletonConcrete, Is.Null, "Interface-registered services should not be available as concrete type");
-        Assert.That(transientConcrete, Is.Null, "Interface-registered services should not be available as concrete type");
-        Assert.That(scopedConcrete, Is.Null, "Interface-registered services should not be available as concrete type");
+        Assert.Multiple(() => {
+            // Assert - These should be null because they're registered via AsMatchingInterface
+            Assert.That(singletonConcrete, Is.Null, "Interface-registered services should not be available as concrete type");
+            Assert.That(transientConcrete, Is.Null, "Interface-registered services should not be available as concrete type");
+            Assert.That(scopedConcrete, Is.Null, "Interface-registered services should not be available as concrete type");
+        });
     }
 
     [Test]

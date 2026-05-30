@@ -1,3 +1,5 @@
+using ScrutorAttributes.Test.Assembly;
+
 namespace ScrutorAttributes.Tests.TestServices;
 
 // Singleton Services
@@ -5,7 +7,7 @@ public interface ISingletonService {
     string GetMessage();
 }
 
-[InjectedSingleton]
+[InjectedSingleton(As =typeof(ISingletonService))]
 public class SingletonService : ISingletonService {
     private readonly Guid _id = Guid.NewGuid();
 
@@ -131,3 +133,7 @@ public class IfEqualService {}
 
 [InjectedSingleton(If = TestEnvironementVariable.Name, NotEqual = TestEnvironementVariable.SameValue)]
 public class IfNotEqualService { }
+
+
+[InjectedSingleton]
+public class InterfaceImplementation : ILibraryInterface { }

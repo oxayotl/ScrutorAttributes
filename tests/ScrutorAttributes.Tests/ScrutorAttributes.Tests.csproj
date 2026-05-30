@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ScrutorAttributes.Test.Assembly\ScrutorAttributes.Test.Assembly.csproj" />
     <ProjectReference Include="..\..\src\ScrutorAttributes\ScrutorAttributes.csproj" />
   </ItemGroup>
 

@@ -17,10 +17,12 @@ public class ThisAssemblyTests {
         services.AddScrutorAttributesForThisAssembly();
         var serviceProvider = services.BuildServiceProvider();
 
-        // Assert - Services from test assembly should be registered
-        Assert.That(serviceProvider.GetService<ISingletonService>(), Is.Not.Null);
-        Assert.That(serviceProvider.GetService<ITransientService>(), Is.Not.Null);
-        Assert.That(serviceProvider.GetService<IScopedService>(), Is.Not.Null);
+        Assert.Multiple(() => {
+            // Assert - Services from test assembly should be registered
+            Assert.That(serviceProvider.GetService<ISingletonService>(), Is.Not.Null);
+            Assert.That(serviceProvider.GetService<ITransientService>(), Is.Not.Null);
+            Assert.That(serviceProvider.GetService<IScopedService>(), Is.Not.Null);
+        });
     }
 
     [Test]
