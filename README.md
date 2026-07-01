@@ -1,29 +1,10 @@
 ## ScrutorAttributes
 
-ASP.NET Core [Scrutor](https://github.com/khellang/Scrutor) extension for automatic registration of classes marked with Attribute InjectedScoped, InjectedSingleton and InjectedTransient
+ASP.NET Core [Scrutor](https://github.com/khellang/Scrutor) extension for automatic registration of classes marked with Attribute `InjectedScoped`, `InjectedSingleton` and `InjectedTransient`
 
 ### About This Project
 
-EasyScrutor is a modernized fork of the original [Scrutor.AspNetCore](https://github.com/sefacan/Scrutor.AspNetCore) project. The main goals of this fork were to:
-
-- **Modernize the library** with updated dependencies and best practices
-- **Remove the misleading "AspNetCore" from the name** - while this library works great with ASP.NET Core, it also works with any .NET application using dependency injection (console apps, worker services, etc.)
-- **Continue development** with a clear path forward, as discussions with the original maintainer indicated the original project might not receive active updates
-
-The original project was created by [sefacan](https://github.com/sefacan) and provided a simple, convention-based approach to dependency injection. This fork maintains that simplicity while ensuring compatibility with modern .NET versions.
-
-**Major improvements in Scrutor dependency (v4.2.0 -> v7.0.0):**
-- **Keyed service registration support** - Leverage .NET 8's keyed DI for more advanced scenarios
-- **Interface filtering for `AsSelfWithInterfaces`** - Better control over which interfaces to register
-- **Security fix** - Resolved System.Text.Json vulnerability through DependencyModel update
-- **Performance improvements** - Optimized decoration performance for applications with many services
-- **Generic type support** - Better handling of generic ServiceDescriptor from C# 11+
-- **.NET 6 and .NET 8 support** - Full compatibility with modern .NET versions
-- **Bug fixes**:
-  - Fixed multiple decoration layers for generic types
-  - Made DecoratedType and IsDecorated method public for extensibility
-  - Improved error handling when scanning assemblies
-  - Fixed generic type creation exceptions
+ScrutorAttributes is a fork of [EasyScrutor](https://github.com/alexdresko/EasyScrutor) project, inspired by Spring injection mechanism. It replaces the `interface`-based injection by `Attribute`-based injection.
 
 ### Build Status
 | Build server    | Platform       | Status      |
@@ -37,61 +18,59 @@ The original project was created by [sefacan](https://github.com/sefacan) and pr
 
 ## Quick Start
 
-Get started with EasyScrutor in just 3 steps:
+Get started with ScrutorAttributes in just 3 steps:
 
 **1. Install the package:**
 ```bash
-dotnet add package EasyScrutor
+dotnet add package ScrutorAttributes
 ```
 
-**2. Mark your services with a lifetime interface:**
+**2. Mark your services with a lifetime Attribute:**
 ```csharp
 public interface IMyService { string GetMessage(); }
-public class MyService : IMyService, IScopedLifetime
+[InjectedScoped]
+public class MyService : IMyService
 {
-    public string GetMessage() => "Hello from EasyScrutor!";
+    public string GetMessage() => "Hello from ScrutorAttributes!";
 }
 ```
 
 **3. Register in Program.cs:**
 ```csharp
-builder.Services.AddEasyScrutor();
+builder.Services.AddScrutorAttributes();
 ```
 
 That's it! Your services are now automatically registered and ready to inject anywhere in your application.
 
 ## Installation
 
-Install the [EasyScrutor NuGet Package](https://www.nuget.org/packages/EasyScrutor).
+Install the [ScrutorAttributes NuGet Package](https://www.nuget.org/packages/ScrutorAttributes).
 
 ### Package Manager Console
 
 ```
-Install-Package EasyScrutor
+Install-Package ScrutorAttributes
 ```
 
 ### .NET Core CLI
 
 ```
-dotnet add package EasyScrutor
+dotnet add package ScrutorAttributes
 ```
 
 ## Usage
 
-EasyScrutor automatically discovers and registers your services by scanning for classes that implement lifetime marker interfaces.
+ScrutorAttributes automatically discovers and registers your services by scanning for classes marked with lifetime attributes.
 
 ### Step 1: Mark your service classes
 
-Implement one of the lifetime marker interfaces on your service classes:
-- `IScopedLifetime` - Registers as Scoped
-- `ITransientLifetime` - Registers as Transient
-- `ISingletonLifetime` - Registers as Singleton
-- `ISelfScopedLifetime` - Registers as Scoped (self-registration, no interface)
-- `ISelfTransientLifetime` - Registers as Transient (self-registration, no interface)
-- `ISelfSingletonLifetime` - Registers as Singleton (self-registration, no interface)
+Add one of the following Attributes to your service classes:
+- `InjectedScoped` - Scoped registration
+- `InjectedTransient` - Transient registration
+- `InjectedSingleton` - Singleton registration
 
 ```csharp
-using EasyScrutor;
+using ScrutorAttributes;
 
 public interface IDataService
 {
@@ -99,7 +78,8 @@ public interface IDataService
 }
 
 // This class will be automatically registered as Scoped
-public class DataService : IDataService, IScopedLifetime
+[InjectedScoped]
+public class DataService : IDataService
 {
     public async Task<string> GetDataAsync()
     {
@@ -108,9 +88,7 @@ public class DataService : IDataService, IScopedLifetime
 }
 ```
 
-### Step 2: Register EasyScrutor in your application
-
-> **⚠️ BREAKING CHANGE**: The method signature has been updated. Please use `AddEasyScrutor()` instead of `AddAdvancedDependencyInjection()` for clearer, more intuitive naming.
+### Step 2: Register ScrutorAttributes in your application
 
 **ASP.NET Core:**
 
@@ -118,7 +96,7 @@ public class DataService : IDataService, IScopedLifetime
 var builder = WebApplication.CreateBuilder(args);
 
 // Add EasyScrutor - automatically scans and registers services
-builder.Services.AddEasyScrutor();
+builder.Services.AddScrutorAttributes();
 
 var app = builder.Build();
 app.Run();
@@ -130,7 +108,7 @@ app.Run();
 var builder = Host.CreateApplicationBuilder(args);
 
 // Add EasyScrutor - automatically scans and registers services
-builder.Services.AddEasyScrutor();
+builder.Services.AddScrutorAttributes();
 
 var host = builder.Build();
 host.Run();
@@ -158,16 +136,42 @@ public class MyController : ControllerBase
 }
 ```
 
-That's it! No manual service registration needed - EasyScrutor handles it all for you.
+That's it! No manual service registration needed - ScrutorAttributes handles it all for you.
 
 ## Advanced Usage
 
 ### Filtering Assemblies for Performance
 
-By default, `AddEasyScrutor()` scans all assemblies in your application's dependency context. For better performance, especially in large applications, you can filter which assemblies to scan:
+By default, `AddScrutorAttributes()` scans all assemblies in your application's dependency context. For better performance, especially in large applications, you can filter which assemblies to scan.
+
+**Scan every assemblies with**
 
 ```csharp
-builder.Services.AddEasyScrutor(assembly =>
+builder.Services.AddScrutorAttributes();
+```
+
+**Scan assemblies with a specific prefix**
+
+```csharp
+builder.Services.AddScrutorAttributesForAssembliesStartingWith("some.prefix");
+```
+
+**Scan assemblies containing a specific string**
+
+```csharp
+builder.Services.AddScrutorAttributesForAssembliesContaining("some.string");
+```
+
+**Scan only from the assembly calling ScrutorAttributes with**
+
+```csharp
+builder.Services.AddScrutorAttributesForThisAssembly();
+```
+
+**Or use any custom function to select which assemblies to scan from with**
+
+```csharp
+builder.Services.AddScrutorAttributesForThisAssembly(assembly =>
 {
     // Only scan assemblies from your application, exclude framework assemblies
     return !assembly.FullName?.StartsWith("Microsoft.", StringComparison.Ordinal) == true &&
@@ -176,28 +180,96 @@ builder.Services.AddEasyScrutor(assembly =>
 });
 ```
 
-**Or target specific assemblies:**
-
-```csharp
-// Only scan assemblies matching your application name
-builder.Services.AddEasyScrutor(assembly =>
-    assembly.FullName?.StartsWith("MyCompany.MyApp", StringComparison.Ordinal) == true);
-```
-
-**Or exclude test/development assemblies in production:**
-
-```csharp
-builder.Services.AddEasyScrutor(assembly =>
-{
-    var name = assembly.FullName ?? string.Empty;
-    return !name.Contains("Tests") &&
-           !name.Contains("Mock") &&
-           !name.StartsWith("Microsoft.") &&
-           !name.StartsWith("System.");
-});
-```
-
 This can significantly improve application startup time by reducing the number of assemblies scanned for service registration.
+
+### Select which type each Attribute class should be registered as
+
+#### As a global strategy
+
+By default, `ScrutorAttribute` will register each `class` as itself and every `interface` the class implements. You can make registration more selective by selecting one of the following strategies:
+
+- **Register each class only as itself with**
+
+```csharp
+builder.Services.AddScrutorAttributes(RegisterAs.Self);
+```
+
+- **Register each class as every interfaces it implements with**
+
+```csharp
+builder.Services.AddScrutorAttributes(RegisterAs.Interfaces);
+```
+
+- **Register each class as the interface it implements if there is exactly one such interface, or as itself otherwise, with**
+
+```csharp
+builder.Services.AddScrutorAttributes(RegisterAs.OneInterfaceOrSelf);
+```
+
+- **Register each class as every interface it implements and that is part of the same assembly**
+
+```csharp
+builder.Services.AddScrutorAttributes(RegisterAs.InterfacesFromSameAssembly);
+```
+
+- **Register each class as every interface it implements and that is part of the same assembly, and also as itself**
+
+```csharp
+builder.Services.AddScrutorAttributes(RegisterAs.SelfAndInterfacesFromSameAssembly);
+```
+
+- **Or you can explicitely force the default option of registering each class as itself and every interface it implements with**
+
+```csharp
+builder.Services.AddScrutorAttributes(RegisterAs.Everything);
+```
+
+#### As a per-Attribute override
+
+If you need to, you can override the global strategy, and explicitely specify which types a class should be injected at, by using the Attributes' parameters `As` (to specify one type the class should be registered as), or `InjectedAs` (to specify multiples types).
+
+```csharp
+using ScrutorAttributes;
+
+public interface IDataService
+{
+    Task<string> GetDataAsync();
+}
+
+// This class will not be registered as IDisposable
+[InjectedScoped(InjectedAs = [typeof(DataService), typeof(IDataService)])
+public class DataService : IDataService, IDisposable
+{
+    public async Task<string> GetDataAsync()
+    {
+        return await Task.FromResult("Hello from DataService!");
+    }
+}
+```
+
+### Conditional registration
+
+One key interest of dependency injection is to make it easier to have multiple implementation of an interface, and switch which implementation to use depending on context. To allow this with `ScrutorAttributes`, you can add the following Attributes to a class
+ - `InjectIfDefined("variable_name")` to register the class only if a variable with a certain name is registered in the application's environement
+ - `InjectIfNotDefined("variable_name")` to register the class only if no variable with a certain name are registered in the application's environement
+ - `InjectIfEqual("variable_name", "variable_value")` to register the class only if the variable with name `variable_name` is defined and equal to `variable_value`. By default the comparision is done using `StringComparison.InvariantCultureIgnoreCase` but you can specify how the comparision should be made by using the optional parameter `StringComparision`
+ - `InjectIfNotEqual("variable_name", "variable_value", ...)` to register the class only if the variable with name `variable_name` is not equal any of the following arguments. You can specify how the string comparision is made with `StringComparision` like with previous Attribute `InjectIfEqual`
+
+ If multiple condition registration attributes are set, the class will only the registered if all of them are verified.
+
+ #### Example
+
+```csharp
+using ScrutorAttributes;
+
+[InjectedScoped, InjectIfDefined("use_data_service"), InjectIfNotEqual("type_data_service", "first_data_service_type", "second_data_service_type", StringComparison = StringComparison.InvariantCulture)])
+public class DefaultDataService : IDataService
+{
+// ...
+}
+```
+This class will be injected only if `Environement` contains a variable named `use_data_service`, AND either there is no defined `type_data_service` variable, or `type_data_service` is defined to a value that is neither `first_data_service_type` nor `second_data_service_type`, using a case-senstive, invariant culture string comparison.
+
 
 ## Examples
 

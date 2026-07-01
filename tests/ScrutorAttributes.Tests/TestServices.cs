@@ -114,9 +114,6 @@ public class GenericService<T> : IGenericService<T> {
 
 public class IntGenericService : GenericService<int> {}
 
-[InjectedSingleton(If = "some_environement_variable")]
-public class IfService {}
-
 public static class TestEnvironementVariable {
     public const string Name = "some_environement_variable";
     public const string SameValue = "same_value";
@@ -124,14 +121,18 @@ public static class TestEnvironementVariable {
     public const string SameValueWithDifferentCase = "sAmE_VaLuE";
 }
 
-[InjectedSingleton(IfNot = TestEnvironementVariable.Name)]
+[InjectedSingleton, InjectIfDefined(TestEnvironementVariable.Name)]
+public class IfService {}
+
+
+[InjectedSingleton, InjectIfNotDefined(TestEnvironementVariable.Name)]
 public class IfNotService {}
 
 
-[InjectedSingleton(If = TestEnvironementVariable.Name, Equal = TestEnvironementVariable.SameValue)]
+[InjectedSingleton, InjectIfEqual(TestEnvironementVariable.Name, TestEnvironementVariable.SameValue)]
 public class IfEqualService {}
 
-[InjectedSingleton(If = TestEnvironementVariable.Name, NotEqual = TestEnvironementVariable.SameValue)]
+[InjectedSingleton, InjectIfNotEqual(TestEnvironementVariable.Name, TestEnvironementVariable.DifferentValue, TestEnvironementVariable.SameValue)]
 public class IfNotEqualService { }
 
 

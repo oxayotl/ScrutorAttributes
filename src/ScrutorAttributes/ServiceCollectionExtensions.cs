@@ -183,34 +183,19 @@ public static class ServiceCollectionExtensions {
     /// <returns>The configured implementation type selector.</returns>
     private static IImplementationTypeSelector AddClassesFromAnnotations(this IImplementationTypeSelector selector, RegisterAs defaultInjectionStrategy = RegisterAs.Everything) {
         selector.AddClasses(classes => classes.
-            WithAttribute<Injected>()
+            WithAttribute<InjectedAttribute>()
         )
         .UsingRegistrationStrategy(RegistrationStrategy.Skip)
         .As(t => {
             if (t.IsGenericType) {
                 return [];
             }
-            var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
 
-            if (injectedAttribute.If != null) {
-                if (Environment.GetEnvironmentVariable(injectedAttribute.If) == null && injectedAttribute.NotEqual == null) {
-                    return [];
-                }
-                if (injectedAttribute.Equal != null && !string.Equals(Environment.GetEnvironmentVariable(injectedAttribute.If), injectedAttribute.Equal, StringComparison.InvariantCultureIgnoreCase)) {
-                    return [];
-                }
-                if (injectedAttribute.NotEqual != null && string.Equals(Environment.GetEnvironmentVariable(injectedAttribute.If), injectedAttribute.NotEqual, StringComparison.InvariantCultureIgnoreCase)) {
-                    return [];
-                }
-            }
-            if (injectedAttribute.IfNot != null && Environment.GetEnvironmentVariable(injectedAttribute.IfNot) != null) {
-                return [];
-            }
+            var conditionalInjectionAttributes = t.GetCustomAttributes<RegistrationConditionAttribute>(true);
+            if (conditionalInjectionAttributes.Any(c => !c.IsSatisfied())) { return []; }
 
+            var injectedAttribute = (t.GetCustomAttributes(typeof(InjectedAttribute), true).First() as InjectedAttribute)!;
 
-            if (injectedAttribute.AsSelf) {
-                return [t];
-            }
             List<Type> result = [.. injectedAttribute.InjectedAs];
             if (injectedAttribute.As != null) {
                 result.Add(injectedAttribute.As);
@@ -247,7 +232,7 @@ public static class ServiceCollectionExtensions {
         }
         )
         .WithLifetime(t => {
-            var injectedAttribute = (t.GetCustomAttributes(typeof(Injected), true).First() as Injected)!;
+            var injectedAttribute = (t.GetCustomAttributes(typeof(InjectedAttribute), true).First() as InjectedAttribute)!;
             return injectedAttribute.Lifetime;
         }
         );

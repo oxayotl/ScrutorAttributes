@@ -3,8 +3,10 @@
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 
     <!-- Package Metadata -->
-    <Description>Convention-based dependency injection for .NET using Scrutor. Automatically register services by adding Attribute to your classes - no manual registration needed. Works with ASP.NET Core, Blazor, Worker Services, and any .NET app using DI.</Description>
-    <PackageTags>dependency-injection;di;scrutor;convention-based;ioc;aspnetcore;dotnet;blazor;worker-service;automatic-registration</PackageTags>
+    <Description>Convention-based dependency injection for .NET using Scrutor. 
+Automatically register services by adding Attribute to your classes - no manual registration needed. 
+Works with ASP.NET Core, Blazor, Worker Services, and any .NET app using DI.</Description>
+    <PackageTags>dependency-injection;di;scrutor;convention-based;attribute;ioc;aspnetcore;dotnet;blazor;worker-service;automatic-registration</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>See https://github.com/oxayotl/ScrutorAttributes/releases for detailed release notes</PackageReleaseNotes>
 
@@ -37,6 +39,7 @@
     <EnablePackageValidation>true</EnablePackageValidation>
     <Nullable>enable</Nullable>
     <PackageId>oxayotl.$(AssemblyName)</PackageId>
+    <Title>Scrutor Attributes</Title>
   </PropertyGroup>
 
   <ItemGroup>

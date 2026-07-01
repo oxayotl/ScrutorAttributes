@@ -5,7 +5,7 @@ public class LifetimeInterfaceTests {
     [Test]
     public void InjectedSingleton_AttributeShouldExist() {
         // Arrange & Act
-        var type = typeof(InjectedSingleton);
+        var type = typeof(InjectedSingletonAttribute);
 
         // Assert
         Assert.That(type, Is.Not.Null);
@@ -16,7 +16,7 @@ public class LifetimeInterfaceTests {
     [Test]
     public void InjectedTransient_AttributeShouldExist() {
         // Arrange & Act
-        var type = typeof(InjectedTransient);
+        var type = typeof(InjectedTransientAttribute);
 
         // Assert
         Assert.That(type, Is.Not.Null);
@@ -27,7 +27,7 @@ public class LifetimeInterfaceTests {
     [Test]
     public void InjectedScoped_AttributeShouldExist() {
         // Arrange & Act
-        var type = typeof(InjectedScoped);
+        var type = typeof(InjectedScopedAttribute);
 
         // Assert
         Assert.That(type, Is.Not.Null);
@@ -62,9 +62,9 @@ public class LifetimeInterfaceTests {
         // Arrange
         var lifetimeTypes = new[]
         {
-            typeof(InjectedScoped),
-            typeof(InjectedSingleton),
-            typeof(InjectedTransient),
+            typeof(InjectedScopedAttribute),
+            typeof(InjectedSingletonAttribute),
+            typeof(InjectedTransientAttribute),
         };
 
         // Act & Assert
