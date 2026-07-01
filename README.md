@@ -9,10 +9,8 @@ ScrutorAttributes is a fork of [EasyScrutor](https://github.com/alexdresko/EasyS
 ### Build Status
 | Build server    | Platform       | Status      |
 |-----------------|----------------|-------------|
-| Github Actions  | All            | ![Build Status](https://github.com/oxayotl/ScrutorAttributes/workflows/.NET%20Core%20CI/badge.svg) |
-| Code Coverage   | All            | [![codecov](https://codecov.io/gh/oxayotl/ScrutorAttributes/branch/master/graph/badge.svg)](https://codecov.io/gh/oxayotl/ScrutorAttributes) |
-| NuGet           | Package        | [![NuGet](https://img.shields.io/nuget/v/ScrutorAttributes.svg)](https://www.nuget.org/packages/ScrutorAttributes/) |
-| NuGet           | Downloads      | [![NuGet Downloads](https://img.shields.io/nuget/dt/ScrutorAttributes.svg)](https://www.nuget.org/packages/ScrutorAttributes/) |
+| NuGet           | Package        | [![NuGet](https://img.shields.io/nuget/v/oxayotl.ScrutorAttributes.svg)](https://www.nuget.org/packages/oxayotl.ScrutorAttributes/) |
+| NuGet           | Downloads      | [![NuGet Downloads](https://img.shields.io/nuget/dt/oxayotl.ScrutorAttributes.svg)](https://www.nuget.org/packages/ScrutorAttributes/) |
 | GitHub          | Release        | [![GitHub Release](https://img.shields.io/github/release/oxayotl/ScrutorAttributes.svg)](https://github.com/oxayotl/ScrutorAttributes/releases) |
 | License         | MIT            | [![License](https://img.shields.io/github/license/oxayotl/ScrutorAttributes.svg)](LICENSE) |
 
