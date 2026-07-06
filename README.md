@@ -10,7 +10,7 @@ ScrutorAttributes is a fork of [EasyScrutor](https://github.com/alexdresko/EasyS
 | Build server    | Platform       | Status      |
 |-----------------|----------------|-------------|
 | NuGet           | Package        | [![NuGet](https://img.shields.io/nuget/v/oxayotl.ScrutorAttributes.svg)](https://www.nuget.org/packages/oxayotl.ScrutorAttributes/) |
-| NuGet           | Downloads      | [![NuGet Downloads](https://img.shields.io/nuget/dt/oxayotl.ScrutorAttributes.svg)](https://www.nuget.org/packages/ScrutorAttributes/) |
+| NuGet           | Downloads      | [![NuGet Downloads](https://img.shields.io/nuget/dt/oxayotl.ScrutorAttributes.svg)](https://www.nuget.org/packages/oxayotl.ScrutorAttributes/) |
 | GitHub          | Release        | [![GitHub Release](https://img.shields.io/github/release/oxayotl/ScrutorAttributes.svg)](https://github.com/oxayotl/ScrutorAttributes/releases) |
 | License         | MIT            | [![License](https://img.shields.io/github/license/oxayotl/ScrutorAttributes.svg)](LICENSE) |
 
