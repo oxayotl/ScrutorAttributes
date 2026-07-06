@@ -11,7 +11,7 @@ Works with ASP.NET Core, Blazor, Worker Services, and any .NET app using DI.</De
     <PackageReleaseNotes>See https://github.com/oxayotl/ScrutorAttributes/releases for detailed release notes</PackageReleaseNotes>
 
     <!-- Version & Authors -->
-    <Version>0.0.1</Version>
+    <Version>0.1.0</Version>
     <Authors>Jean-Alexandre Anglès d'Auriac</Authors>
     <Copyright>Copyright (c) 2025 Jean-Alexandre Anglès d'Auriac</Copyright>
 
