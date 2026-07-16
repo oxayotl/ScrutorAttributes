@@ -15,8 +15,8 @@ builder.Services.AddSingleton<IAnotherService, AnotherService>();
 ```
 
 You simply:
-1. Implement marker interfaces on your services (`IScopedLifetime`, `ISingletonLifetime`, `ITransientLifetime`)
-2. Call `AddEasyScrutor()` once
+1. Add Attributes to on your services (`InjectedScoped`, `InjectedSingleton`, `InjectedTransient`)
+2. Call `AddScrutorAttributes()` once
 3. All services are automatically discovered and registered!
 
 ## Available Examples
@@ -69,8 +69,9 @@ public interface IMyService
     string DoSomething();
 }
 
-// Implementation - Add the appropriate lifetime marker interface
-public class MyService : IMyService, IScopedLifetime
+// Implementation - Add the appropriate lifetime marker attribute
+[InjectedScoped]
+public class MyService : IMyService
 {
     public string DoSomething() => "Hello from auto-registered service!";
 }
@@ -85,8 +86,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add all your other services...
 builder.Services.AddControllers();
 
-// Add EasyScrutor - This scans and registers all services
-builder.Services.AddEasyScrutor();
+// Add ScrutorAttributes - This scans and registers all services
+builder.Services.AddScrutorAttributes();
 
 var app = builder.Build();
 
@@ -97,8 +98,8 @@ app.Run();
 ```csharp
 var builder = Host.CreateApplicationBuilder(args);
 
-// Add EasyScrutor - This scans and registers all services
-builder.Services.AddEasyScrutor();
+// Add ScrutorAttributes - This scans and registers all services
+builder.Services.AddScrutorAttributes();
 
 builder.Services.AddHostedService<Worker>();
 
@@ -124,21 +125,18 @@ public class MyController : Controller
 
 | Interface | Lifetime | Use Case |
 |-----------|----------|----------|
-| `IScopedLifetime` | Scoped | Services that should live for the duration of a request |
-| `ISingletonLifetime` | Singleton | Services that should be created once and shared across the app |
-| `ITransientLifetime` | Transient | Services that should be created new each time they're requested |
-| `ISelfScopedLifetime` | Scoped | Register the service as itself (not interface) with scoped lifetime |
-| `ISelfSingletonLifetime` | Singleton | Register the service as itself (not interface) with singleton lifetime |
-| `ISelfTransientLifetime` | Transient | Register the service as itself (not interface) with transient lifetime |
+| `InjectedScoped` | Scoped | Services that should live for the duration of a request |
+| `InjectedSingleton` | Singleton | Services that should be created once and shared across the app |
+| `InjectedTransient` | Transient | Services that should be created new each time they're requested |
 
 ## Benefits
 
 ✅ **Cleaner Code** - No more cluttered Program.cs with dozens of service registrations  
-✅ **Convention-Based** - Simply implement an interface to define the lifetime  
+✅ **Convention-Based** - Simply add an attribute to define the lifetime  
 ✅ **Type-Safe** - Compile-time checked, no magic strings  
 ✅ **Maintainable** - Services declare their own lifetime alongside their implementation  
 ✅ **Flexible** - Can still manually register services when needed  
-✅ **Discoverable** - Easy to find all services by searching for lifetime interfaces
+✅ **Discoverable** - Easy to find all services by searching for lifetime attribute
 
 ## Building and Running
 
@@ -157,19 +155,19 @@ dotnet run --project ConsoleHostExample
 
 ## Learn More
 
-For more information, visit the [EasyScrutor GitHub repository](https://github.com/alexdresko/EasyScrutor).
+For more information, visit the [ScrutorAttribute GitHub repository](https://github.com/oxayotl/ScrutorAttributes).
 
 ## Troubleshooting
 
 ### Services Not Being Registered?
 
-1. **Check the namespace**: Services must be in a namespace that's scanned by `AddEasyScrutor()`
-2. **Verify interface implementation**: Ensure your service implements one of the lifetime marker interfaces
+1. **Check the namespace**: Services must be in a namespace that's scanned by `AddScrutorAttributes()`
+2. **Verify attribute presence**: Ensure your service is marked with one of the lifetime attribute
 3. **Public classes only**: Services must be public to be discovered
 4. **Check assembly**: By default, the entry assembly is scanned
 
 ### Need Help?
 
-- Check the [examples](https://github.com/alexdresko/EasyScrutor/tree/master/examples) for working code
-- Open an [issue](https://github.com/alexdresko/EasyScrutor/issues) if you find a bug
-- Start a [discussion](https://github.com/alexdresko/EasyScrutor/discussions) for questions
+- Check the [examples](https://github.com/oxayotl/ScrutorAttributes/tree/master/examples) for working code
+- Open an [issue](https://github.com/oxayotl/ScrutorAttributes/issues) if you find a bug
+- Start a [discussion](https://github.com/oxayotl/ScrutorAttributes/discussions) for questions
